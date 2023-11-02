@@ -1,5 +1,6 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useRef } from "react";
 import "./App.css";
+import { ExportPdf } from "./util/getPdf";
 
 function generPaper(layoutStr: string, json: string): JSX.Element[] {
   const Com: JSX.Element[] = [];
@@ -85,12 +86,23 @@ function App() {
                 }`;
 
   const Com = generPaper(layoutStr, json);
+  const ref1 = useRef(null);
+  const refs = [ref1];
   return (
-    <div style={{ overflow: "visible" }}>
-      {Com?.map((item: ReactNode, index) => {
-        return <>{item}</>;
-      })}
-    </div>
+    <>
+      <div style={{ overflow: "visible" }} ref={ref1}>
+        {Com?.map((item: ReactNode) => {
+          return <>{item}</>;
+        })}
+      </div>
+      <button
+        onClick={() => {
+          ExportPdf(refs, "简历");
+        }}
+      >
+        导出简历
+      </button>
+    </>
   );
 }
 
